@@ -1,0 +1,42 @@
+server:
+ port: ${AUTHORIZATION_SERVER_PORT}
+
+spring:
+ application:
+  name: authorization-server
+ cloud:
+  config:
+     uri: http://${CONFIG_SERVER_IP}:${CONFIG_SERVER_PORT}
+ zipkin:
+  baseUrl: http://${ZIPKIN_SERVER_IP}:${ZIPKIN_SERVER_PORT}/
+ sleuth:
+  sampler:
+   probability: 1
+   
+eureka:
+  client:
+   registryFetchIntervalSeconds: 10
+   serviceUrl:
+      defaultZone: http://${EUREKA_SERVER_IP}:${EUREKA_SERVER_PORT}/eureka/
+      
+feign:
+ oauth2:
+  enabled: true      
+  
+logging:
+ level:
+  org:
+   springframework:
+    cloud:
+     sleuth: ${SLEUTH_LOGGING_LEVEL} 
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+         enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
